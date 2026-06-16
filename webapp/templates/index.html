@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+<section class="card">
+  <h2>Analisar uma radiografia</h2>
+  <p class="desc">
+    Envie uma imagem de raio-X de tórax. O modelo classifica entre
+    <strong>NORMAL</strong> e <strong>PNEUMONIA</strong> e mostra um mapa de calor
+    (Grad-CAM) com as regiões que mais influenciaram a decisão.
+  </p>
+
+  {% if erro %}
+    <p class="erro">{{ erro }}</p>
+  {% endif %}
+
+  <form action="{{ url_for('predict') }}" method="post" enctype="multipart/form-data">
+    <label class="campo">
+      <span>Imagem (JPEG / PNG)</span>
+      <input type="file" name="imagem" accept="image/*" required>
+    </label>
+
+    <fieldset class="modelos">
+      <legend>Modelo</legend>
+
+      <label class="opcao">
+        <input type="radio" name="modelo" value="transfer" checked
+               {% if not disponiveis.transfer %}disabled{% endif %}>
+        Transfer Learning (VGG16)
+        {% if not disponiveis.transfer %}<em>— treine com <code>make train</code></em>{% endif %}
+      </label>
+
+      <label class="opcao">
+        <input type="radio" name="modelo" value="scratch"
+               {% if not disponiveis.scratch %}disabled{% endif %}>
+        CNN do zero
+        {% if not disponiveis.scratch %}<em>— treine com <code>make train</code></em>{% endif %}
+      </label>
+    </fieldset>
+
+    <button type="submit" class="btn">Classificar</button>
+  </form>
+</section>
+{% endblock %}

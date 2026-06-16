@@ -1,0 +1,31 @@
+# CardioIA — Fase 4 / Cap 1: Visão Computacional na Clínica
+# Python 3.11 (TensorFlow não suporta 3.14). Crie o venv com `python3.11 -m venv`.
+
+# --- Deep Learning / Visão Computacional ---
+tensorflow==2.16.2          # Keras 3 incluso; VGG16/ResNet em keras.applications
+# tensorflow-metal==1.1.0   # (opcional) aceleração GPU em Apple Silicon
+
+# --- Processamento de imagem / dados ---
+pillow==10.4.0
+numpy==1.26.4               # faixa compatível com tensorflow 2.16
+pandas==2.2.2
+
+# --- Métricas e avaliação ---
+scikit-learn==1.5.1
+
+# --- Visualização ---
+matplotlib==3.9.2
+seaborn==0.13.2
+
+# --- Aplicação web (protótipo) ---
+flask==3.0.3
+
+# --- Dataset ---
+kagglehub==0.3.3
+
+# --- Notebooks ---
+jupyter==1.1.1
+notebook==7.2.2
+
+# --- Testes ---
+pytest==8.3.3

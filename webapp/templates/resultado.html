@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+<section class="card">
+  <h2>Resultado da análise</h2>
+
+  <div class="veredito veredito--{{ pred.classe|lower }}">
+    <span class="classe">{{ pred.classe }}</span>
+    <span class="rotulo">{{ pred.rotulo }}</span>
+    <span class="confianca">Confiança: {{ '%.1f'|format(pred.probabilidade * 100) }}%</span>
+  </div>
+
+  <p class="meta">
+    Modelo: <strong>{{ 'Transfer Learning (VGG16)' if modelo == 'transfer' else 'CNN do zero' }}</strong>
+    · P(PNEUMONIA) = {{ '%.3f'|format(pred.prob_pneumonia) }}
+  </p>
+
+  <div class="imagens">
+    <figure>
+      <img src="{{ img_original }}" alt="Radiografia enviada">
+      <figcaption>Imagem analisada (224×224)</figcaption>
+    </figure>
+    <figure>
+      <img src="{{ img_gradcam }}" alt="Mapa de calor Grad-CAM">
+      <figcaption>Grad-CAM — regiões de maior atenção do modelo</figcaption>
+    </figure>
+  </div>
+
+  <a class="btn btn--secundario" href="{{ url_for('index') }}">Analisar outra imagem</a>
+</section>
+{% endblock %}

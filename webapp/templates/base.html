@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CardioIA · Visão Computacional na Clínica</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="topo">
+    <h1>CardioIA <span>· Triagem Visual de Raios-X</span></h1>
+    <p class="sub">Fase 4 · Cap 1 — Visão Computacional na Clínica</p>
+  </header>
+
+  <main class="conteudo">
+    {% block conteudo %}{% endblock %}
+  </main>
+
+  <footer class="rodape">
+    <p>
+      ⚠️ Protótipo acadêmico de <strong>apoio à decisão</strong>. Não é
+      diagnóstico médico nem substitui avaliação de um profissional de saúde.
+    </p>
+  </footer>
+</body>
+</html>
