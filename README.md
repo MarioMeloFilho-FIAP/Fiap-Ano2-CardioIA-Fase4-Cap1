@@ -3,7 +3,8 @@
 Protótipo de **Assistente Cardiológico Virtual com Visão Computacional**. O sistema
 pré-processa imagens médicas (raios-X de tórax), treina e avalia **CNNs** para
 classificar entre `NORMAL` e `PNEUMONIA`, e apresenta o resultado em uma **interface
-web Flask** com mapa de calor **Grad-CAM** (interpretabilidade da decisão).
+web Flask** e em um **app mobile (React Native)**, ambos com mapa de calor
+**Grad-CAM** (interpretabilidade da decisão).
 
 > ⚠️ **Aviso:** projeto **acadêmico** de apoio à decisão. Não é diagnóstico médico
 > nem substitui avaliação profissional. Dados de imagem são de dataset público de
@@ -72,15 +73,25 @@ make jupyter   # rode notebooks/ir_alem1_fairness.ipynb
 Relatório em [`docs/RELATORIO_IR_ALEM1.md`](docs/RELATORIO_IR_ALEM1.md); métricas em
 `src/fairness.py` (testadas em `tests/test_fairness.py`).
 
-**Ir Além 2 — App mobile (React Native + Expo).** Consome a API JSON do Flask:
+**Ir Além 2 — App mobile (React Native + Expo).** App em [`mobile/`](mobile/) que
+consome a API JSON do Flask. São **dois servidores, em portas diferentes**: o Flask
+serve a **API** (`:5000`) e o Expo serve o **app** (`:8081`) — rode os dois:
 
 ```bash
-make web                       # 1) backend em 0.0.0.0:5000
-cd mobile && npm install && npx expo start   # 2) app (ver mobile/README.md)
+make web                       # 1) backend Flask em 0.0.0.0:5000 (a API)
+cd mobile && npm install && npx expo start   # 2) app Expo em :8081
 ```
+
+Depois abra o app:
+- **Navegador (Chrome + Device Mode):** aperte `w` (requer os pacotes de web — ver doc).
+- **Celular físico:** escaneie o QR code com o **Expo Go** (ajuste a `API_BASE_URL`
+  para o IP da máquina em `mobile/src/config.ts`).
+
 A API expõe `GET /api/health` e `POST /api/predict` (multipart `imagem` + `modelo`),
-retornando classe, confiança e Grad-CAM em base64. Detalhes em
-[`mobile/README.md`](mobile/README.md); roteiro do vídeo em
+retornando classe, confiança e Grad-CAM em base64.
+
+📱 **Setup completo, configuração de rede e troubleshooting:**
+[`mobile/README.md`](mobile/README.md) · **roteiro do vídeo:**
 [`mobile/ROTEIRO_VIDEO.md`](mobile/ROTEIRO_VIDEO.md).
 
 ## Decisões de projeto
@@ -108,3 +119,4 @@ retornando classe, confiança e Grad-CAM em base64. Detalhes em
 | Nome | RM |
 |---|---|
 | Carlos Mário Vieira de Melo Filho | RM563769 |
+| Stephanie Dias dos Santos | RM564315 |
