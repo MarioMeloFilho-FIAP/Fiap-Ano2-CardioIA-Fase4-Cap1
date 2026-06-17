@@ -3,7 +3,8 @@
 Protótipo de **Assistente Cardiológico Virtual com Visão Computacional**. O sistema
 pré-processa imagens médicas (raios-X de tórax), treina e avalia **CNNs** para
 classificar entre `NORMAL` e `PNEUMONIA`, e apresenta o resultado em uma **interface
-web Flask** com mapa de calor **Grad-CAM** (interpretabilidade da decisão).
+web Flask** e em um **app mobile (React Native)**, ambos com mapa de calor
+**Grad-CAM** (interpretabilidade da decisão).
 
 > ⚠️ **Aviso:** projeto **acadêmico** de apoio à decisão. Não é diagnóstico médico
 > nem substitui avaliação profissional. Dados de imagem são de dataset público de
@@ -15,6 +16,8 @@ web Flask** com mapa de calor **Grad-CAM** (interpretabilidade da decisão).
 |---|---|---|
 | **Parte 1** | Pipeline de pré-processamento e organização das imagens | `notebooks/parte1_preprocessamento.ipynb`, `src/preprocessing.py`, `docs/RELATORIO_PARTE1.md` |
 | **Parte 2** | CNN do zero + Transfer Learning (VGG16), avaliação e protótipo | `notebooks/parte2_cnn_classificacao.ipynb`, `webapp/`, `docs/RELATORIO_PARTE2.md` |
+| **Ir Além 1** | Ética e Governança: vieses do dataset + métricas de *fairness* | `notebooks/ir_alem1_fairness.ipynb`, `src/fairness.py`, `docs/RELATORIO_IR_ALEM1.md` |
+| **Ir Além 2** | App mobile (React Native + Expo) consumindo a API Flask | `mobile/`, API JSON em `webapp/app.py` (`/api/predict`) |
 
 📚 Explicação didática de **todos os conceitos** de ML/redes neurais usados (com
 ponteiros para o código): [`docs/CONCEITOS.md`](docs/CONCEITOS.md).
@@ -30,14 +33,15 @@ ponteiros para o código): [`docs/CONCEITOS.md`](docs/CONCEITOS.md).
 ## Estrutura
 
 ```
-src/          utilidades compartilhadas (config, preprocessing, inference, gradcam)
-notebooks/    parte1 (pré-processamento) e parte2 (CNNs + avaliação)
+src/          utilidades compartilhadas (config, preprocessing, inference, gradcam, fairness)
+notebooks/    parte1, parte2 e ir_alem1_fairness
 scripts/      download_dataset.py (baixa o dataset e gera o subset balanceado)
-webapp/       app Flask (upload → classificação + confiança + Grad-CAM)
+webapp/       app Flask: interface web + API JSON (/api/predict) para o mobile
+mobile/       app React Native + Expo (Ir Além 2)
 models/       modelos .keras gerados pelos notebooks (não versionados)
 data/         dataset e subset (não versionados)
-docs/         relatórios das Partes 1 e 2, figuras de métricas e CONCEITOS.md
-tests/        testes pytest (pré-processamento e inferência)
+docs/         relatórios (Parte 1, Parte 2, Ir Além 1), figuras e CONCEITOS.md
+tests/        testes pytest (preprocessing, inference, fairness)
 ```
 
 ## Como executar
@@ -57,6 +61,38 @@ make test          # roda a suíte de testes
 > `export CHEST_XRAY_DIR=/caminho/para/chest_xray` antes de `make dataset`.
 
 Para abrir os notebooks interativamente: `make jupyter`.
+
+## Ir Além
+
+**Ir Além 1 — Ética e Governança (fairness).** Análise de vieses do dataset e
+equidade do modelo por subtipo de pneumonia (bacteriana × viral):
+
+```bash
+make jupyter   # rode notebooks/ir_alem1_fairness.ipynb
+```
+Relatório em [`docs/RELATORIO_IR_ALEM1.md`](docs/RELATORIO_IR_ALEM1.md); métricas em
+`src/fairness.py` (testadas em `tests/test_fairness.py`).
+
+**Ir Além 2 — App mobile (React Native + Expo).** App em [`mobile/`](mobile/) que
+consome a API JSON do Flask. São **dois servidores, em portas diferentes**: o Flask
+serve a **API** (`:5000`) e o Expo serve o **app** (`:8081`) — rode os dois:
+
+```bash
+make web                       # 1) backend Flask em 0.0.0.0:5000 (a API)
+cd mobile && npm install && npx expo start   # 2) app Expo em :8081
+```
+
+Depois abra o app:
+- **Navegador (Chrome + Device Mode):** aperte `w` (requer os pacotes de web — ver doc).
+- **Celular físico:** escaneie o QR code com o **Expo Go** (ajuste a `API_BASE_URL`
+  para o IP da máquina em `mobile/src/config.ts`).
+
+A API expõe `GET /api/health` e `POST /api/predict` (multipart `imagem` + `modelo`),
+retornando classe, confiança e Grad-CAM em base64.
+
+📱 **Setup completo, configuração de rede e troubleshooting:**
+[`mobile/README.md`](mobile/README.md) · **roteiro do vídeo:**
+[`mobile/ROTEIRO_VIDEO.md`](mobile/ROTEIRO_VIDEO.md).
 
 ## Decisões de projeto
 
@@ -83,3 +119,4 @@ Para abrir os notebooks interativamente: `make jupyter`.
 | Nome | RM |
 |---|---|
 | Carlos Mário Vieira de Melo Filho | RM563769 |
+| Stephanie Dias dos Santos | RM564315 |

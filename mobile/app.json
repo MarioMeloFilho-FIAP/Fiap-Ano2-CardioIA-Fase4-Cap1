@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "CardioIA",
+    "slug": "cardioia-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#0d3c75"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "O CardioIA precisa acessar suas fotos para enviar a radiografia à análise."
+      }
+    },
+    "android": {
+      "package": "br.com.fiap.cardioia"
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "O CardioIA precisa acessar suas fotos para enviar a radiografia à análise."
+        }
+      ]
+    ]
+  }
+}
